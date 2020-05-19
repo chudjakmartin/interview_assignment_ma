@@ -1,0 +1,9 @@
+# pytest / coverage reports
+__pycache__/
+.pyc
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
