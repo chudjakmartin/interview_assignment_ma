@@ -13,10 +13,12 @@ def parse_arguments(cmd_arguments=None):
     Parse argument from the cmd so they may be used
     by the reverse_and_uppercase() function.
 
-    Parameters:
-    cmd_arguments (list): Variable to pass arguments during testing
+    Parameters
+    -------
+        cmd_arguments (list): Variable to pass arguments during testing
 
-    Returns:
+    Returns
+    -------
         input_variables['r'] (bool): If True, string should be reversed
         input_variables['u'] (bool): If True, string should be uppercased
         string_to_process (str): Contains whole string to process
@@ -47,22 +49,63 @@ def parse_arguments(cmd_arguments=None):
     return input_variables['r'], input_variables['u'], string_to_process
 
 
+def reverse_string(input_string=''):
+    """
+    Resevre the input_string.
+
+    Parameters
+    -------
+        input_string (str): string to be reverted
+
+    Returns
+    -------
+        output_string (str): reverted string
+    """
+    try:
+        output_string = input_string[::-1]
+    except TypeError:
+        raise Exception("Invalid input format")
+    return output_string
+
+
+def uppercase_string(input_string=''):
+    """
+    Transform input string to uppercase.
+
+    Parameters
+    ----------
+        input_string (str): string to be uppercased
+
+    Returns
+    -------
+        output_string (str): string transformed to uppercase
+
+    """
+    try:
+        output_string = input_string.upper()
+    except AttributeError:
+        raise Exception("Invalid input format")
+    return output_string
+
+
 def reverse_and_uppercase(reverse_bool=True, uppercase_bool=True,
                           string_to_process=''):
     """
     Function revert a string and/or make it uppercase.
 
-    Parameters:
+    Parameters
+    -------
         reverse_bool (bool): If True, string should be reversed
         uppercase_bool (bool): If True, string should be uppercased
         string_to_process (str): Contains whole string to process
-    Returns:
+    Returns
+    -------
         string_to_process (str): Processed string
     """
     if reverse_bool:
-        string_to_process = string_to_process[::-1]
+        string_to_process = reverse_string(string_to_process)
     if uppercase_bool:
-        string_to_process = string_to_process.upper()
+        string_to_process = uppercase_string(string_to_process)
 
     return string_to_process
 
