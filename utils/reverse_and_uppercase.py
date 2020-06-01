@@ -36,17 +36,26 @@ def parse_arguments(cmd_arguments=None):
                         help='If argument given, transforms the input string'
                         'to uppercase.',
                         default=False)
+    parser.add_argument('-f',
+                        action="store",
+                        help='Name of a file the input string is read from.',
+                        default=None)
     parser.add_argument('string_to_process',
                         action="store",
                         nargs='*', default='', type=str, help='input string')
     input_variables = vars(parser.parse_args(cmd_arguments))
 
-    string_to_process = ' '.join(input_variables['string_to_process'])
-
     # if no flag given, we want both bool vars to be True
     if (not input_variables['r']) and (not input_variables['u']):
         input_variables['r'], input_variables['u'] = True, True
-    return input_variables['r'], input_variables['u'], string_to_process
+
+    if input_variables['f']:
+        string_to_process = read_string_from_file(input_variables['f'])
+    else:
+        string_to_process = ' '.join(input_variables['string_to_process'])
+
+    return input_variables['r'], input_variables['u'], \
+            string_to_process, input_variables['f']
 
 
 def reverse_string(input_string=''):
@@ -62,7 +71,10 @@ def reverse_string(input_string=''):
         output_string (str): reverted string
     """
     try:
-        output_string = input_string[::-1]
+        strings = input_string.split('\n')
+        for i in range(len(strings)):
+            strings[i] = strings[i][::-1]
+        output_string = '\n'.join(strings)
     except TypeError:
         raise Exception("Invalid input format")
     return output_string
@@ -89,7 +101,8 @@ def uppercase_string(input_string=''):
 
 
 def reverse_and_uppercase(reverse_bool=True, uppercase_bool=True,
-                          string_to_process=''):
+                          string_to_process='', input_file=None,
+                          sufix='_processed'):
     """
     Function revert a string and/or make it uppercase.
 
@@ -98,6 +111,7 @@ def reverse_and_uppercase(reverse_bool=True, uppercase_bool=True,
         reverse_bool (bool): If True, string should be reversed
         uppercase_bool (bool): If True, string should be uppercased
         string_to_process (str): Contains whole string to process
+        input_file (str): Name of the input file
     Returns
     -------
         string_to_process (str): Processed string
@@ -107,7 +121,32 @@ def reverse_and_uppercase(reverse_bool=True, uppercase_bool=True,
     if uppercase_bool:
         string_to_process = uppercase_string(string_to_process)
 
+    if input_file:
+        output_file = '.'.join(input_file.split('.')[:-1]) + sufix + '.txt'
+        with open(output_file, 'w') as file:
+            file.write(string_to_process)
+
     return string_to_process
+
+
+def read_string_from_file(filename=''):
+    """
+    Read string from file named filename.
+
+    File is expected to contain only one line.
+
+    Parameters
+    ----------
+    filename (str): Name of file to be read.
+
+    Returns
+    -------
+        string_to_process (str): String read from the file
+    """
+    with open(filename, 'r') as reader:
+        file_lines = reader.readlines()
+        file_lines = ''.join(file_lines)
+        return file_lines
 
 
 if __name__ == '__main__':
