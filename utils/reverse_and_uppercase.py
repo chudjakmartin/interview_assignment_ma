@@ -54,8 +54,8 @@ def parse_arguments(cmd_arguments=None):
     else:
         string_to_process = ' '.join(input_variables['string_to_process'])
 
-    return input_variables['r'], input_variables['u'], \
-            string_to_process, input_variables['f']
+    return input_variables['r'], input_variables['u'], string_to_process,\
+        input_variables['f']
 
 
 def reverse_string(input_string=''):
@@ -131,9 +131,7 @@ def reverse_and_uppercase(reverse_bool=True, uppercase_bool=True,
 
 def read_string_from_file(filename=''):
     """
-    Read string from file named filename.
-
-    File is expected to contain only one line.
+    Read strings from file a named filename.
 
     Parameters
     ----------

@@ -4,6 +4,7 @@ Created on Fri May 15 18:53:29 2020
 
 @author: Martin Chudjak
 """
+import os
 import pytest
 from interview_assignment_ma.utils.reverse_and_uppercase import \
     reverse_and_uppercase
@@ -56,10 +57,11 @@ def test_parse_arguments(tmpdir):
     # Tests wrong number of arguments
     with pytest.raises(TypeError):
         cmd_arguments = []
+        # pylint: disable=E1121
         assert parse_arguments(cmd_arguments, 'Aditional argument')
 
 
-def test_reverse_and_uppercase():
+def test_reverse_and_uppercase(tmpdir):
     """Tests for reverse_and_uppercase()"""
     # Tests for nonempty input string to process
     assert reverse_and_uppercase(
@@ -99,12 +101,26 @@ def test_reverse_and_uppercase():
 
     # Tests wrong number of arguments
     with pytest.raises(TypeError):
+        # pylint: disable=E1124
         assert reverse_and_uppercase(
             '',
             reverse_bool=False,
             uppercase_bool=False,
             string_to_process='',
             )
+
+    # Tests correct processing of an input from file
+    file_content = 'TEST LINE 1\nTEST LINE 2'
+    input_file = 'testfile.txt'
+    file = tmpdir.join('testfile.txt')
+    file.write(file_content)
+    sufix_output_file = '_processed'
+    assert reverse_and_uppercase(reverse_bool=True, uppercase_bool=True,
+                                 string_to_process=file_content,
+                                 input_file=input_file,
+                                 sufix=sufix_output_file) == \
+        '1 ENIL TSET\n2 ENIL TSET'
+    os.remove(input_file[:-4] + sufix_output_file + '.txt')
 
 
 def test_reverse_string():
@@ -122,6 +138,7 @@ def test_reverse_string():
 
     # Tests wrong number of arguments
     with pytest.raises(TypeError):
+        # pylint: disable=E1121
         assert reverse_string(
             '', 'Aditional argument'
             )
@@ -142,6 +159,7 @@ def test_uppercase_string():
 
     # Tests wrong number of arguments
     with pytest.raises(TypeError):
+        # pylint: disable=E1121
         assert uppercase_string(
             '', 'Aditional argument'
             )
